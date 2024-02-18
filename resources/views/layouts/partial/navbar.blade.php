@@ -21,9 +21,32 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login/index"><i class="bi bi-box-arrow-in-right"></i>Login</a>
-                </li>
+                @auth
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> Welcome, {{ auth()->user()->name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/dashboard/index"><i class="bi bi-window-sidebar"></i> My
+                                    Dashboard</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <form action="/login/logout" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item" href="#"><i class="bi bi-power"></i>
+                                    Logout </a></button>
+                            </form>
+                        </ul>
+                    </li>
+                @else
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/index"><i class="bi bi-box-arrow-in-right"></i>Login</a>
+                        </li>
+                    </ul>
+                @endauth
             </ul>
         </div>
     </div>

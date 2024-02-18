@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,10 +66,19 @@ Route::group(["prefix" => "/kelas"], function () {
 });
 
 Route::group(["prefix" => "/login"], function () {
-    Route::get('index', [LoginController::class, 'index'])->name('login.index');
+    Route::get('index', [LoginController::class, 'index'])->name('login.index')->middleware('guest');
+    Route::post('auth', [LoginController::class, 'auth']);
+    Route::post('logout', [LoginController::class, 'logout']);
 });
 
 Route::group(["prefix" => "/register"], function () {
     Route::get('index', [RegisterController::class, 'index']);
     Route::post('store', [RegisterController::class, 'store']);
 });
+
+Route::group(["prefix" => "/dashboard"], function () {
+    Route::get('index', [DashboardController::class, 'index'])->name('dashboard.index');
+});
+
+
+
