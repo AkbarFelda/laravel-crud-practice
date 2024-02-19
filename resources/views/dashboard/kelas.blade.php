@@ -1,8 +1,13 @@
-@extends('layouts.main')
-
+@extends('dashboard.layouts.main')
 @section('container')
-    {{-- tempat content --}}
     <h1>Tabel Data Kelas</h1>
+    <a type="button" class="btn btn-primary" href="/kelas/create/">Add Data</a>
+    <br></br>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <table class="table">
         <thead>
@@ -17,6 +22,8 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $kelas->kelas }}</td>
                     <td>
+                        <a type="button" class="btn btn-primary" href="/kelas/detail/{{ $kelas->id }}">Detail</a>
+                        <a type="button" class="btn btn-warning" href="/kelas/edit/{{ $kelas->id }}">Edit</a>
                         <form id="delete-form-{{ $kelas->id }}"
                             action="{{ url('/kelas/destroy', ['student' => $kelas->id]) }}" method="post" class="d-inline">
                             @csrf
@@ -29,4 +36,4 @@
             @endforeach
         </tbody>
     </table>
-@endsection
+    @endsection

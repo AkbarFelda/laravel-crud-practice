@@ -2,7 +2,7 @@
 
 @section('container')
     <h1>Edit Data</h1>
-    <a type="button" class="btn btn-primary" href="{{ route('student.all') }}">Back</a>
+    <a type="button" class="btn btn-primary" href="/dashboard/students">Back</a>
     <form action="{{ route('student.update', ['id' => $student->id]) }}" method="post">
         @csrf
         @method('patch')

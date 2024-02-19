@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
+
 {
     public function index()
     {
