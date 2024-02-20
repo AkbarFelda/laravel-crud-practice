@@ -15,24 +15,42 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function students()
-    {
-        $students = Student::with('kelas')->get();
-        return view('dashboard.students', [
-            "title" => "Students",
-            "students" => $students
-        ]);
+    public function students(Request $request) 
+{
+    $search = $request->input('search');
+
+    $query = Student::query();
+
+    if ($search) {
+        $query->where('nis', 'like', '%' . $search . '%')
+            ->orWhere('nama', 'like', '%' . $search . '%')
+            ->orWhere('alamat', 'like', '%' . $search . '%');
     }
+
+    $students = $query->paginate(5);
+
+    return view('dashboard.students', [
+        "title" => "Students",
+        "students" => $students,
+    ]);
+}
 
     public function kelas()
     {
-        return view(
-            'dashboard.kelas',
-            [
-                "title" => "Kelas",
-                "kelasList" => Kelas::all()
-            ]
-        );
+        $search = request('search');
+        $query = Kelas::query();
+
+        if ($search) {
+            $query->where('kelas', 'like', '%' . $search . '%');
+        }
+
+        $kelasList = $query->paginate(5);
+        
+        return view('dashboard.kelas', [
+            "title" => "Kelas",
+            "kelasList" => $kelasList, // Menambah koma untuk pemisah
+            "search" => $search,
+        ]);
     }
 
     public function detail($id)
