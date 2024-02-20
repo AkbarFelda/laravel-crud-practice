@@ -4,18 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+
+use function Laravel\Prompts\search;
+
 class KelasController extends Controller
 {
     public function index()
     {
-        return view(
-            'kelas.all',
-            [
-                "title" => "Kelas",
-                "kelasList" => Kelas::all()
-            ]
-        );
+        $search = request('search');
+        $query = Kelas::query();
+
+        if ($search) {
+            $query->where('kelas', 'like', '%' . $search . '%');
+        }
+
+        $kelasList = $query->paginate(5);
+
+        return view('kelas.all', [
+            "title" => "Kelas",
+            "kelasList" => $kelasList, 
+            "search" => $search,
+        ]);
     }
+
 
     public function show($kelas)
     {

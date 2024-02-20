@@ -10,15 +10,25 @@ use App\Models\Student;
 
 class StudentsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view(
-            'student.all',
-            [
-                "title" => "Students",
-                "students" => Student::all()
-            ]
-        );
+        $search = $request->input('search');
+
+        $query = Student::query();
+
+        if ($search) {
+            $query->where('nis', 'like', '%' . $search . '%')
+                ->orWhere('nama', 'like', '%' . $search . '%')
+                ->orWhere('alamat', 'like', '%' . $search . '%');
+        }
+
+        $students = $query->paginate(5);
+
+        return view('student.all', [
+            "title" => "Students",
+            "students" => $students,
+            "search" => $search,
+        ]);
     }
 
     public function show($student)
